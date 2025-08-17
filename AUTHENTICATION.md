@@ -1,0 +1,63 @@
+# JWT Authentication Setup
+
+This guide explains how to set up and use the JWT authentication endpoint.
+
+## Prerequisites
+
+1. Node.js and npm installed
+2. Dependencies installed (run `npm install`)
+
+## Environment Variables
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Update the `.env` file with your configuration:
+   - `JWT_SECRET`: A secure secret key for signing JWT tokens
+   - `JWT_EXPIRES_IN`: Token expiration time (e.g., '1h' for 1 hour)
+
+## Available Endpoints
+
+### Login
+- **URL**: `/auth/login`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "username": "your_username",
+    "password": "your_password"
+  }
+  ```
+- **Success Response**:
+  ```json
+  {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+  ```
+- **Error Response**:
+  ```json
+  {
+    "statusCode": 401,
+    "message": "Invalid credentials",
+    "error": "Unauthorized"
+  }
+  ```
+
+## Development
+
+1. Start the development server:
+   ```bash
+   npm run start:dev
+   ```
+
+2. The API will be available at `http://localhost:3000`
+
+## Security Notes
+
+- Always use HTTPS in production
+- Store your JWT_SECRET securely and never commit it to version control
+- Use appropriate token expiration times
+- Implement proper password hashing (bcrypt, Argon2, etc.) in production
+- Consider implementing rate limiting to prevent brute force attacks
