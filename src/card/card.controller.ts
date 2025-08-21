@@ -1,5 +1,5 @@
 // card.controller.ts
-import { Controller, Get, Param, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Param, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CardService } from './card.service';
 import { Card } from './card.entity';
 
@@ -7,14 +7,22 @@ import { Card } from './card.entity';
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 
-  @Get(':id')
-  async getCardById(@Param('id') id: string): Promise<Card> {
-    const card = await this.cardService.findById(id);
-    if (!card) {
-      throw new NotFoundException(`Card with ID ${id} not found`);
+    @Get(':id')
+    async getCardById(@Param('id') id: string): Promise<Card> {
+      const cardId = parseInt(id, 10); // Convert the id to a number
+      if (isNaN(cardId)) {
+        throw new BadRequestException('Invalid card ID');
+      }
+      
+      const card = await this.cardService.findById(cardId);
+      
+      if (!card) {
+        throw new NotFoundException(`Card with ID ${cardId} not found`);
+      }
+      
+      return card;
     }
-    return card;
-    }
+
     
     @Get('name/:name')
     async getCardByName(@Param('name') name: string): Promise<Card[]> {

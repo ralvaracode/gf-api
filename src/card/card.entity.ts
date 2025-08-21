@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn } from '@nestjs/typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Card {
