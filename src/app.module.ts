@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config'; // Import ConfigService
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import databaseConfig from './config/database.config';
 import { CardModule } from "./card/card.module";
 import { AppController } from "./app.controller";
@@ -15,8 +15,14 @@ import { AuthModule } from "./auth/auth.module";
       load: [databaseConfig],      
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => configService.get('database'), // Get 'database' config
-      inject: [ConfigService], // Inject ConfigService to access 'database' config
+      useFactory: (configService: ConfigService): TypeOrmModuleOptions => {
+        const dbConfig = configService.get<TypeOrmModuleOptions>("database");
+        if (!dbConfig) {
+          throw new Error("Database configuration not found");
+        }
+        return dbConfig;
+      },
+      inject: [ConfigService],
     }),
     CardModule,
     AuthModule,
