@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity(process.env.DB_TABLE_NAME)
 export class Card {
   @PrimaryGeneratedColumn()
   id: number;
