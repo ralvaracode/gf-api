@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Card } from './card.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Card } from "./card.entity";
 
 @Injectable()
 export class CardService {
@@ -12,9 +12,9 @@ export class CardService {
 
   async findById(id: number): Promise<Card | null> {
     return this.cardRepository.findOne({ where: { id } });
-    }
-    
-    async findByName(name: string): Promise<Card[] | null> {
-      return this.cardRepository.find({ where: { Name:name } });
-    }
+  }
+
+  async findByName(name: string): Promise<Card[] | null> {
+    return this.cardRepository.find({ where: { Name: name } });
+  }
 }
